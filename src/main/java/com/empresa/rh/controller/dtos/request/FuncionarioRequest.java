@@ -1,4 +1,6 @@
 package com.empresa.rh.controller.dtos.request;
 
-public record FuncionarioRequest(String nome, String email, Double salario) {
+import jakarta.validation.constraints.NotBlank;
+
+public record FuncionarioRequest(@NotBlank String nome, @NotBlank String email, @NotBlank Double salario) {
 }

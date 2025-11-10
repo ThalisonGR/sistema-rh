@@ -43,13 +43,14 @@ public class FuncionarioService {
         Funcionario funcionario = repository.findById(id).orElseThrow(() -> new RuntimeException("Nao existe o id"));
         funcionario.setNome(funcionarioRequest.nome());
         funcionario.setEmail(funcionarioRequest.email());
-        funcionario.setEmail(funcionarioRequest.email());
+        funcionario.setSalario(funcionarioRequest.salario());
 
+        repository.save(funcionario);
         return mapper.toFuncionarioResponse(funcionario);
     }
 
-    public List<Funcionario> listarComFiltros(Long departamentoId, Long cargoId, Long chefeId) {
-        return repository.findByFiltros(departamentoId, cargoId, chefeId);
-    }
+//    public List<Funcionario> listarComFiltros(Long departamentoId, Long cargoId, Long chefeId) {
+//        return repository.findByFiltros(departamentoId, cargoId, chefeId);
+//    }
 
 }

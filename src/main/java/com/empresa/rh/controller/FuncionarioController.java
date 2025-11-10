@@ -6,10 +6,7 @@ import com.empresa.rh.controller.mapper.FuncionarioMapper;
 import com.empresa.rh.model.Funcionario;
 import com.empresa.rh.service.FuncionarioService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -38,6 +35,24 @@ public class FuncionarioController {
         return ResponseEntity.created(location).body(funcionarioSaved);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> exlcuir(@PathVariable Long id) {
+        funcionarioService.excluir(id);
+        return  ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public void atualizar(@PathVariable Long id, @RequestBody FuncionarioRequest funcionarioRequest) {
+        FuncionarioResponse funcionarioSaved = funcionarioService.atualizarFuncionario(id, funcionarioRequest);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(funcionarioSaved.id())
+                .toUri();
+
+         ResponseEntity.ok().build();
+    }
 
 
 }

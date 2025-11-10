@@ -1,10 +1,9 @@
 package com.empresa.rh.repository;
 
-import com.empresa.rh.model.Funcionario;
+import com.empresa.rh.model.Departamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FuncionarioRepository extends JpaRepository<Funcionario , Long> {
-
+public interface DepartamentoRepository extends JpaRepository<Departamento, Long> {
 }
