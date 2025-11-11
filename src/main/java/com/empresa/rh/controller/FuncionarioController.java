@@ -3,6 +3,7 @@ package com.empresa.rh.controller;
 import com.empresa.rh.controller.dtos.request.FuncionarioRequest;
 import com.empresa.rh.controller.dtos.response.FuncionarioResponse;
 import com.empresa.rh.controller.mapper.FuncionarioMapper;
+import com.empresa.rh.controller.swagger.FuncionarioControllerDocs;
 import com.empresa.rh.model.Funcionario;
 import com.empresa.rh.service.FuncionarioService;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/funcionario")
-public class FuncionarioController {
+@RequestMapping("/rh/funcionario")
+public class FuncionarioController implements FuncionarioControllerDocs {
 
     private FuncionarioService funcionarioService;
 
@@ -36,13 +37,13 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> exlcuir(@PathVariable Long id) {
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
         funcionarioService.excluir(id);
         return  ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public void atualizar(@PathVariable Long id, @RequestBody FuncionarioRequest funcionarioRequest) {
+    public ResponseEntity<FuncionarioResponse> atualizar(@PathVariable Long id, @RequestBody FuncionarioRequest funcionarioRequest) {
         FuncionarioResponse funcionarioSaved = funcionarioService.atualizarFuncionario(id, funcionarioRequest);
 
         URI location = ServletUriComponentsBuilder
@@ -51,7 +52,7 @@ public class FuncionarioController {
                 .buildAndExpand(funcionarioSaved.id())
                 .toUri();
 
-         ResponseEntity.ok().build();
+         return ResponseEntity.ok().body(funcionarioSaved);
     }
 
 

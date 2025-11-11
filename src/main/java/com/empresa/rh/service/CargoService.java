@@ -6,9 +6,12 @@ import com.empresa.rh.controller.mapper.CargoMapper;
 import com.empresa.rh.model.Cargo;
 import com.empresa.rh.repository.CargoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class CargoService {
@@ -21,6 +24,7 @@ public class CargoService {
 
     public CargoResponse criar (CargoRequest cargoRequest) {
         Cargo cargoSaved = mapper.toCargo(cargoRequest);
+        repository.save(cargoSaved);
         return mapper.toCargoResponse(cargoSaved);
     }
 
@@ -37,6 +41,12 @@ public class CargoService {
     public void excluir(Long id) {
         Cargo cargo = repository.findById(id).orElseThrow(() -> new RuntimeException("Cargo não existe"));
         repository.deleteById(cargo.getId());
+    }
+
+    public Page<CargoResponse> listarCargos(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Cargo> cargos = repository.findAll(pageable);
+        return cargos.map(mapper::toCargoResponse);
     }
 
 
