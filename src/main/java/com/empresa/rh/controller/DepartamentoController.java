@@ -38,13 +38,35 @@ public class DepartamentoController implements DepartamentoControllerDocs {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         departamentoService.excluir(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DepartamentoResponse> atualizar(@PathVariable Long id, @RequestBody DepartamentoRequest departamentoRequest) {
         DepartamentoResponse departamentoResponse = departamentoService.atualizarFuncionario(id, departamentoRequest);
         return ResponseEntity.ok().body(departamentoResponse);
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<org.springframework.data.domain.Page<DepartamentoResponse>> listarDepartamentos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String nome) {
+        org.springframework.data.domain.Page<DepartamentoResponse> departamentos = departamentoService.listarDepartamentos(page, size, sortBy, nome);
+        return ResponseEntity.ok(departamentos);
+    }
+
+    @GetMapping("/todos")
+    public ResponseEntity<java.util.List<DepartamentoResponse>> listarTodosDepartamentos() {
+        java.util.List<DepartamentoResponse> departamentos = departamentoService.listarTodosDepartamentos();
+        return ResponseEntity.ok(departamentos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DepartamentoResponse> buscarPorId(@PathVariable Long id) {
+        DepartamentoResponse departamentoResponse = departamentoService.buscarDepartamnetoId(id);
+        return ResponseEntity.ok(departamentoResponse);
     }
 
 }

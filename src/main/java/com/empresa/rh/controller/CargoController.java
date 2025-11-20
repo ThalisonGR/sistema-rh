@@ -12,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/rh/cargo")
+@RequestMapping("/rh/cargos")
 public class CargoController implements CargoControllerDocs {
 
     private CargoService cargoService;
@@ -38,7 +38,7 @@ public class CargoController implements CargoControllerDocs {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         cargoService.excluir(id);
-        return  ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
@@ -51,12 +51,23 @@ public class CargoController implements CargoControllerDocs {
     public ResponseEntity<Page<CargoResponse>> listarCargos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String nome) {
 
-        Page<CargoResponse> cargoResponsePage = cargoService.listarCargos(page, size, sortBy);
+        Page<CargoResponse> cargoResponsePage = cargoService.listarCargos(page, size, sortBy, nome);
         return ResponseEntity.ok(cargoResponsePage);
     }
 
+    @GetMapping("/todos")
+    public ResponseEntity<java.util.List<CargoResponse>> listarTodosCargos() {
+        java.util.List<CargoResponse> cargos = cargoService.listarTodosCargos();
+        return ResponseEntity.ok(cargos);
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CargoResponse> buscarPorId(@PathVariable Long id) {
+        CargoResponse cargoResponse = cargoService.buscarCargoPorId(id);
+        return ResponseEntity.ok(cargoResponse);
+    }
 
 }

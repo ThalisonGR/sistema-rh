@@ -38,7 +38,7 @@ public class FuncionarioController implements FuncionarioControllerDocs {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         funcionarioService.excluir(id);
-        return  ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
@@ -54,5 +54,20 @@ public class FuncionarioController implements FuncionarioControllerDocs {
          return ResponseEntity.ok().body(funcionarioSaved);
     }
 
+    @GetMapping("/listar")
+    public ResponseEntity<org.springframework.data.domain.Page<FuncionarioResponse>> listarFuncionarios(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String nome) {
+        org.springframework.data.domain.Page<FuncionarioResponse> funcionarios = funcionarioService.listarFuncionarios(page, size, sortBy, nome);
+        return ResponseEntity.ok(funcionarios);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FuncionarioResponse> buscarPorId(@PathVariable Long id) {
+        FuncionarioResponse funcionarioResponse = funcionarioService.buscarFuncionarioPorId(id);
+        return ResponseEntity.ok(funcionarioResponse);
+    }
 
 }

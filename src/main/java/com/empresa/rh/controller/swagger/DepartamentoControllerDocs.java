@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Departamento", description = "Operações relacionadas a departamentos")
 public interface DepartamentoControllerDocs {
@@ -80,4 +81,37 @@ public interface DepartamentoControllerDocs {
             )
             DepartamentoRequest departamentoRequest
     );
+
+    @Operation(
+            summary = "Lista departamentos com paginação",
+            description = "Endpoint para listar departamentos de forma paginada e ordenada, com opção de filtro por nome",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+            }
+    )
+    ResponseEntity<org.springframework.data.domain.Page<DepartamentoResponse>> listarDepartamentos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String nome
+    );
+
+    @Operation(
+            summary = "Lista todos os departamentos",
+            description = "Endpoint para listar todos os departamentos sem paginação",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+            }
+    )
+    ResponseEntity<java.util.List<DepartamentoResponse>> listarTodosDepartamentos();
+
+    @Operation(
+            summary = "Busca departamento por ID",
+            description = "Endpoint para buscar um departamento específico pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Departamento encontrado"),
+                    @ApiResponse(responseCode = "404", description = "Departamento não encontrado")
+            }
+    )
+    ResponseEntity<DepartamentoResponse> buscarPorId(@PathVariable Long id);
 }

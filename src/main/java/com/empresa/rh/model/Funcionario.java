@@ -1,10 +1,6 @@
 package com.empresa.rh.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,11 +19,15 @@ public class Funcionario {
 //    private Date dataContratacao;
     private Double salario;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    private Departamento departamento;
-//
-//    @OneToMany
-//    private Cargo cargo;
-//
-//    private Funcionario funcionario;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "departamento_id")
+    private Departamento departamento;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cargo_id")
+    private Cargo cargo;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "chefe_id")
+    private Funcionario chefe;
 }

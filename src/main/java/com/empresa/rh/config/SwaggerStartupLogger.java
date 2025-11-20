@@ -11,5 +11,8 @@ public class SwaggerStartupLogger {
     public void logSwaggerUrl() {
         System.out.println("Swagger UI disponível em:");
         System.out.println("http://localhost:8080/swagger-ui/index.html");
+
+        System.out.println("Front-end");
+        System.out.println("http://localhost:8080/index.html");
     }
 }

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface FuncionarioControllerDocs {
 
@@ -62,4 +63,28 @@ public interface FuncionarioControllerDocs {
             }
     )
     ResponseEntity<FuncionarioResponse> atualizar(Long id, FuncionarioRequest funcionarioRequest);
+
+    @Operation(
+            summary = "Lista funcionários com paginação",
+            description = "Endpoint para listar funcionários de forma paginada e ordenada, com opção de filtro por nome",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+            }
+    )
+    ResponseEntity<org.springframework.data.domain.Page<FuncionarioResponse>> listarFuncionarios(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String nome
+    );
+
+    @Operation(
+            summary = "Busca funcionário por ID",
+            description = "Endpoint para buscar um funcionário específico pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Funcionário encontrado"),
+                    @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
+            }
+    )
+    ResponseEntity<FuncionarioResponse> buscarPorId(@PathVariable Long id);
 }

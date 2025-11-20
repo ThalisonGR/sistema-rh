@@ -67,7 +67,7 @@ public interface CargoControllerDocs {
 
     @Operation(
             summary = "Lista cargos com paginação",
-            description = "Endpoint para listar cargos de forma paginada e ordenada",
+            description = "Endpoint para listar cargos de forma paginada e ordenada, com opção de filtro por nome",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
             }
@@ -75,6 +75,26 @@ public interface CargoControllerDocs {
     ResponseEntity<Page<CargoResponse>> listarCargos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String nome
     );
+
+    @Operation(
+            summary = "Lista todos os cargos",
+            description = "Endpoint para listar todos os cargos sem paginação",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+            }
+    )
+    ResponseEntity<java.util.List<CargoResponse>> listarTodosCargos();
+
+    @Operation(
+            summary = "Busca cargo por ID",
+            description = "Endpoint para buscar um cargo específico pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Cargo encontrado"),
+                    @ApiResponse(responseCode = "404", description = "Cargo não encontrado")
+            }
+    )
+    ResponseEntity<CargoResponse> buscarPorId(@PathVariable Long id);
 }

@@ -29,7 +29,8 @@ public class CargoService {
     }
 
     public CargoResponse atualizarCargo (Long id, CargoRequest cargoRequest) {
-        Cargo cargo = repository.findById(id).orElseThrow(() -> new RuntimeException("Cargo não existe"));
+        Cargo cargo = repository.findById(id)
+            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Cargo", id));
         cargo.setNome(cargoRequest.nome());
         cargo.setDescricao(cargoRequest.descricao());
 
@@ -39,15 +40,34 @@ public class CargoService {
     }
 
     public void excluir(Long id) {
-        Cargo cargo = repository.findById(id).orElseThrow(() -> new RuntimeException("Cargo não existe"));
+        Cargo cargo = repository.findById(id)
+            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Cargo", id));
         repository.deleteById(cargo.getId());
     }
 
-    public Page<CargoResponse> listarCargos(int page, int size, String sortBy) {
+    public CargoResponse buscarCargoPorId(Long id) {
+        Cargo cargo = repository.findById(id)
+            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Cargo", id));
+        return mapper.toCargoResponse(cargo);
+    }
+
+    public Page<CargoResponse> listarCargos(int page, int size, String sortBy, String nome) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<Cargo> cargos = repository.findAll(pageable);
+        Page<Cargo> cargos;
+        
+        if (nome != null && !nome.trim().isEmpty()) {
+            cargos = repository.findByNomeContainingIgnoreCase(nome, pageable);
+        } else {
+            cargos = repository.findAll(pageable);
+        }
+        
         return cargos.map(mapper::toCargoResponse);
     }
 
+    public java.util.List<CargoResponse> listarTodosCargos() {
+        return repository.findAll().stream()
+            .map(mapper::toCargoResponse)
+            .collect(java.util.stream.Collectors.toList());
+    }
 
 }
