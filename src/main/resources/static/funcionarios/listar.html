@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionários - Sistema de RH</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+                <i class="bi bi-people-fill"></i> Sistema de RH
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="listar.html">Funcionários</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../cargos/listar.html">Cargos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../departamentos/listar.html">Departamentos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="bi bi-people-fill"></i> Funcionários</h2>
+            <div>
+                <a href="cadastrar.html" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Novo Funcionário
+                </a>
+                <a href="procurar.html" class="btn btn-outline-secondary">
+                    <i class="bi bi-search"></i> Procurar
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="buscaNome" placeholder="Buscar por nome...">
+                            <button class="btn btn-outline-primary" type="button" onclick="buscarFuncionarios()">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                            <button class="btn btn-outline-secondary" type="button" onclick="limparBusca()">
+                                <i class="bi bi-x-circle"></i> Limpar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="tabelaFuncionarios">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Salário</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyFuncionarios">
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Carregando...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Navegação de páginas">
+                    <ul class="pagination justify-content-center" id="paginacao">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Exclusão -->
+    <div class="modal fade" id="modalExcluir" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir este funcionário?</p>
+                    <p class="text-muted"><strong>ID:</strong> <span id="modalExcluirId"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="btnConfirmarExcluir">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script>
+        let paginaAtual = 0;
+        let tamanhoPagina = 10;
+        let funcionarioParaExcluir = null;
+        let nomeFiltro = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarFuncionarios();
+            // Permitir busca ao pressionar Enter
+            document.getElementById('buscaNome').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    buscarFuncionarios();
+                }
+            });
+        });
+
+        async function carregarFuncionarios(page = 0) {
+            try {
+                const nome = document.getElementById('buscaNome')?.value || nomeFiltro;
+                const response = await FuncionarioAPI.listar(page, tamanhoPagina, 'id', nome || null);
+                exibirFuncionarios(response.content);
+                atualizarPaginacao(response);
+                paginaAtual = page;
+            } catch (error) {
+                let mensagemErro = 'Erro ao carregar funcionários.';
+                if (error.message) {
+                    mensagemErro = error.message;
+                }
+                showAlert(`<i class="bi bi-exclamation-triangle"></i> ${mensagemErro}`, 'danger');
+                document.getElementById('tbodyFuncionarios').innerHTML = 
+                    '<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados</td></tr>';
+            }
+        }
+
+        function buscarFuncionarios() {
+            nomeFiltro = document.getElementById('buscaNome').value.trim();
+            carregarFuncionarios(0);
+        }
+
+        function limparBusca() {
+            document.getElementById('buscaNome').value = '';
+            nomeFiltro = null;
+            carregarFuncionarios(0);
+        }
+
+        function exibirFuncionarios(funcionarios) {
+            const tbody = document.getElementById('tbodyFuncionarios');
+            
+            if (!funcionarios || funcionarios.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum funcionário encontrado</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = funcionarios.map(funcionario => `
+                <tr>
+                    <td>${funcionario.id}</td>
+                    <td>${funcionario.nome}</td>
+                    <td>${funcionario.email}</td>
+                    <td>R$ ${parseFloat(funcionario.salario).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td>
+                        <a href="editar.html?id=${funcionario.id}" class="btn btn-sm btn-warning btn-action" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button class="btn btn-sm btn-danger btn-action" onclick="abrirModalExcluir(${funcionario.id})" title="Excluir">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function atualizarPaginacao(pageData) {
+            const paginacao = document.getElementById('paginacao');
+            const totalPages = pageData.totalPages;
+            const currentPage = pageData.number;
+
+            if (totalPages <= 1) {
+                paginacao.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+
+            html += `
+                <li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="carregarFuncionarios(${currentPage - 1}); return false;">Anterior</a>
+                </li>
+            `;
+
+            for (let i = 0; i < totalPages; i++) {
+                if (i === 0 || i === totalPages - 1 || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    html += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="carregarFuncionarios(${i}); return false;">${i + 1}</a>
+                        </li>
+                    `;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    html += '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                }
+            }
+
+            html += `
+                <li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="carregarFuncionarios(${currentPage + 1}); return false;">Próximo</a>
+                </li>
+            `;
+
+            paginacao.innerHTML = html;
+        }
+
+        function abrirModalExcluir(id) {
+            funcionarioParaExcluir = id;
+            document.getElementById('modalExcluirId').textContent = id;
+            const modal = new bootstrap.Modal(document.getElementById('modalExcluir'));
+            modal.show();
+        }
+
+        document.getElementById('btnConfirmarExcluir')?.addEventListener('click', async () => {
+            if (funcionarioParaExcluir) {
+                try {
+                    await FuncionarioAPI.excluir(funcionarioParaExcluir);
+                    showAlert('Funcionário excluído com sucesso!', 'success');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modalExcluir'));
+                    modal.hide();
+                    carregarFuncionarios(paginaAtual);
+                } catch (error) {
+                    showAlert('Erro ao excluir funcionário: ' + error.message, 'danger');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

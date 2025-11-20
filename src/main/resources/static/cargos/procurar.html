@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurar Cargo - Sistema de RH</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+                <i class="bi bi-people-fill"></i> Sistema de RH
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../funcionarios/listar.html">Funcionários</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="listar.html">Cargos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../departamentos/listar.html">Departamentos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0"><i class="bi bi-search"></i> Procurar Cargo</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="formBuscar">
+                            <div class="mb-3">
+                                <label for="id" class="form-label">ID do Cargo</label>
+                                <input type="number" class="form-control" id="id" name="id" min="1" required>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="listar.html" class="btn btn-secondary">Voltar</a>
+                                <button type="submit" class="btn btn-info text-white">
+                                    <i class="bi bi-search"></i> Buscar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="resultado" class="mt-4" style="display: none;">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">Resultado da Busca</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <tbody id="dadosCargo">
+                                </tbody>
+                            </table>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="listar.html" class="btn btn-secondary">Voltar</a>
+                                <a id="btnEditar" href="#" class="btn btn-warning">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script>
+        document.getElementById('formBuscar').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const id = document.getElementById('id').value;
+            
+            try {
+                const cargo = await CargoAPI.buscarPorId(id);
+                
+                document.getElementById('dadosCargo').innerHTML = `
+                    <tr>
+                        <th width="30%">ID:</th>
+                        <td>${cargo.id}</td>
+                    </tr>
+                    <tr>
+                        <th>Nome:</th>
+                        <td>${cargo.nome}</td>
+                    </tr>
+                    <tr>
+                        <th>Descrição:</th>
+                        <td>${cargo.descricao || '-'}</td>
+                    </tr>
+                `;
+                
+                document.getElementById('btnEditar').href = `editar.html?id=${cargo.id}`;
+                document.getElementById('resultado').style.display = 'block';
+            } catch (error) {
+                let mensagemErro = 'Cargo não encontrado.';
+                if (error.message && error.message.includes('não encontrado')) {
+                    mensagemErro = error.message;
+                } else if (error.message) {
+                    mensagemErro = error.message;
+                }
+                
+                showAlert(`<i class="bi bi-exclamation-triangle"></i> ${mensagemErro}`, 'danger');
+                document.getElementById('resultado').style.display = 'none';
+                document.getElementById('id').value = '';
+                document.getElementById('id').focus();
+            }
+        });
+    </script>
+</body>
+</html>
+

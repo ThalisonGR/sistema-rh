@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Cargo - Sistema de RH</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+                <i class="bi bi-people-fill"></i> Sistema de RH
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../funcionarios/listar.html">Funcionários</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="listar.html">Cargos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../departamentos/listar.html">Departamentos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0"><i class="bi bi-briefcase-fill"></i> Cadastrar Cargo</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="formCargo">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome *</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descricao" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="listar.html" class="btn btn-secondary">Cancelar</a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-circle"></i> Salvar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script>
+        document.getElementById('formCargo').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                nome: document.getElementById('nome').value,
+                descricao: document.getElementById('descricao').value || null
+            };
+
+            try {
+                await CargoAPI.criar(formData);
+                showAlert('Cargo cadastrado com sucesso!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'listar.html';
+                }, 1500);
+            } catch (error) {
+                showAlert('Erro ao cadastrar cargo: ' + error.message, 'danger');
+            }
+        });
+    </script>
+</body>
+</html>
+
