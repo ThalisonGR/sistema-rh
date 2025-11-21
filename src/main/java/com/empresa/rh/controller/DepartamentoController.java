@@ -4,11 +4,13 @@ import com.empresa.rh.controller.dtos.request.DepartamentoRequest;
 import com.empresa.rh.controller.dtos.response.DepartamentoResponse;
 import com.empresa.rh.controller.swagger.DepartamentoControllerDocs;
 import com.empresa.rh.service.DepartamentoService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rh/departamento")
@@ -48,7 +50,7 @@ public class DepartamentoController implements DepartamentoControllerDocs {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<org.springframework.data.domain.Page<DepartamentoResponse>> listarDepartamentos(
+    public ResponseEntity<Page<DepartamentoResponse>> listarDepartamentos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -58,7 +60,7 @@ public class DepartamentoController implements DepartamentoControllerDocs {
     }
 
     @GetMapping("/todos")
-    public ResponseEntity<java.util.List<DepartamentoResponse>> listarTodosDepartamentos() {
+    public ResponseEntity<List<DepartamentoResponse>> listarTodosDepartamentos() {
         java.util.List<DepartamentoResponse> departamentos = departamentoService.listarTodosDepartamentos();
         return ResponseEntity.ok(departamentos);
     }

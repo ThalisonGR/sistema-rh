@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rh/cargos")
@@ -59,8 +60,8 @@ public class CargoController implements CargoControllerDocs {
     }
 
     @GetMapping("/todos")
-    public ResponseEntity<java.util.List<CargoResponse>> listarTodosCargos() {
-        java.util.List<CargoResponse> cargos = cargoService.listarTodosCargos();
+    public ResponseEntity<List<CargoResponse>> listarTodosCargos() {
+        List<CargoResponse> cargos = cargoService.listarTodosCargos();
         return ResponseEntity.ok(cargos);
     }
 

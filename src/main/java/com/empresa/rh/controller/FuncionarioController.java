@@ -5,6 +5,7 @@ import com.empresa.rh.controller.dtos.response.FuncionarioResponse;
 import com.empresa.rh.controller.mapper.FuncionarioMapper;
 import com.empresa.rh.controller.swagger.FuncionarioControllerDocs;
 import com.empresa.rh.service.FuncionarioService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -55,12 +56,12 @@ public class FuncionarioController implements FuncionarioControllerDocs {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<org.springframework.data.domain.Page<FuncionarioResponse>> listarFuncionarios(
+    public ResponseEntity<Page<FuncionarioResponse>> listarFuncionarios(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(required = false) String nome) {
-        org.springframework.data.domain.Page<FuncionarioResponse> funcionarios = funcionarioService.listarFuncionarios(page, size, sortBy, nome);
+            Page<FuncionarioResponse> funcionarios = funcionarioService.listarFuncionarios(page, size, sortBy, nome);
         return ResponseEntity.ok(funcionarios);
     }
 
