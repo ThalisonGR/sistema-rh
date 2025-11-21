@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
+
 @ToString
 @Entity
 @Getter
@@ -16,7 +18,9 @@ public class Funcionario {
     private Long id;
     private String nome;
     private String email;
-//    private Date dataContratacao;
+    
+    @Temporal(TemporalType.DATE)
+    private Date dataContratacao;
     private Double salario;
 
     @ManyToOne(fetch = FetchType.EAGER)

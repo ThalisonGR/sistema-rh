@@ -3,6 +3,7 @@ package com.empresa.rh.service;
 import com.empresa.rh.controller.dtos.request.FuncionarioRequest;
 import com.empresa.rh.controller.dtos.response.FuncionarioResponse;
 import com.empresa.rh.controller.mapper.FuncionarioMapper;
+import com.empresa.rh.exception.ResourceNotFoundException;
 import com.empresa.rh.model.Cargo;
 import com.empresa.rh.model.Departamento;
 import com.empresa.rh.model.Funcionario;
@@ -37,21 +38,21 @@ public class FuncionarioService {
         // Associar departamento se fornecido
         if (funcionarioRequest.departamentoId() != null) {
             Departamento departamento = departamentoRepository.findById(funcionarioRequest.departamentoId())
-                .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Departamento", funcionarioRequest.departamentoId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Departamento", funcionarioRequest.departamentoId()));
             funcionario.setDepartamento(departamento);
         }
         
         // Associar cargo se fornecido
         if (funcionarioRequest.cargoId() != null) {
             Cargo cargo = cargoRepository.findById(funcionarioRequest.cargoId())
-                .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Cargo", funcionarioRequest.cargoId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Cargo", funcionarioRequest.cargoId()));
             funcionario.setCargo(cargo);
         }
         
         // Associar chefe se fornecido
         if (funcionarioRequest.chefeId() != null) {
             Funcionario chefe = repository.findById(funcionarioRequest.chefeId())
-                .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Chefe", funcionarioRequest.chefeId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Chefe", funcionarioRequest.chefeId()));
             funcionario.setChefe(chefe);
         }
         
@@ -61,7 +62,7 @@ public class FuncionarioService {
 
     public FuncionarioResponse buscarFuncionarioPorId(Long id) {
         Funcionario funcionario = repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Funcionário", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Funcionário", id));
         return mapper.toFuncionarioResponse(funcionario);
     }
 
@@ -72,12 +73,12 @@ public class FuncionarioService {
 
     private void verificaSeExiste(Long id) {
         repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Funcionário", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Funcionário", id));
     }
 
     public FuncionarioResponse atualizarFuncionario(Long id, FuncionarioRequest funcionarioRequest) {
         Funcionario funcionario = repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Funcionário", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Funcionário", id));
         funcionario.setNome(funcionarioRequest.nome());
         funcionario.setEmail(funcionarioRequest.email());
         funcionario.setSalario(funcionarioRequest.salario());
@@ -85,7 +86,7 @@ public class FuncionarioService {
         // Atualizar departamento
         if (funcionarioRequest.departamentoId() != null) {
             Departamento departamento = departamentoRepository.findById(funcionarioRequest.departamentoId())
-                .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Departamento", funcionarioRequest.departamentoId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Departamento", funcionarioRequest.departamentoId()));
             funcionario.setDepartamento(departamento);
         } else {
             funcionario.setDepartamento(null);
@@ -94,7 +95,7 @@ public class FuncionarioService {
         // Atualizar cargo
         if (funcionarioRequest.cargoId() != null) {
             Cargo cargo = cargoRepository.findById(funcionarioRequest.cargoId())
-                .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Cargo", funcionarioRequest.cargoId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Cargo", funcionarioRequest.cargoId()));
             funcionario.setCargo(cargo);
         } else {
             funcionario.setCargo(null);
@@ -103,7 +104,7 @@ public class FuncionarioService {
         // Atualizar chefe
         if (funcionarioRequest.chefeId() != null) {
             Funcionario chefe = repository.findById(funcionarioRequest.chefeId())
-                .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Chefe", funcionarioRequest.chefeId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Chefe", funcionarioRequest.chefeId()));
             funcionario.setChefe(chefe);
         } else {
             funcionario.setChefe(null);

@@ -3,6 +3,7 @@ package com.empresa.rh.service;
 import com.empresa.rh.controller.dtos.request.CargoRequest;
 import com.empresa.rh.controller.dtos.response.CargoResponse;
 import com.empresa.rh.controller.mapper.CargoMapper;
+import com.empresa.rh.exception.ResourceNotFoundException;
 import com.empresa.rh.model.Cargo;
 import com.empresa.rh.repository.CargoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -30,7 +34,7 @@ public class CargoService {
 
     public CargoResponse atualizarCargo (Long id, CargoRequest cargoRequest) {
         Cargo cargo = repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Cargo", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Cargo", id));
         cargo.setNome(cargoRequest.nome());
         cargo.setDescricao(cargoRequest.descricao());
 
@@ -41,13 +45,13 @@ public class CargoService {
 
     public void excluir(Long id) {
         Cargo cargo = repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Cargo", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Cargo", id));
         repository.deleteById(cargo.getId());
     }
 
     public CargoResponse buscarCargoPorId(Long id) {
         Cargo cargo = repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Cargo", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Cargo", id));
         return mapper.toCargoResponse(cargo);
     }
 
@@ -64,10 +68,10 @@ public class CargoService {
         return cargos.map(mapper::toCargoResponse);
     }
 
-    public java.util.List<CargoResponse> listarTodosCargos() {
+    public List<CargoResponse> listarTodosCargos() {
         return repository.findAll().stream()
             .map(mapper::toCargoResponse)
-            .collect(java.util.stream.Collectors.toList());
+            .collect(Collectors.toList());
     }
 
 }

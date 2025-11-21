@@ -3,6 +3,7 @@ package com.empresa.rh.service;
 import com.empresa.rh.controller.dtos.request.DepartamentoRequest;
 import com.empresa.rh.controller.dtos.response.DepartamentoResponse;
 import com.empresa.rh.controller.mapper.DepartamentoMapper;
+import com.empresa.rh.exception.ResourceNotFoundException;
 import com.empresa.rh.model.Departamento;
 import com.empresa.rh.repository.DepartamentoRepository;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartamentoService {
@@ -30,7 +34,7 @@ public class DepartamentoService {
 
     public DepartamentoResponse buscarDepartamnetoId(Long id) {
         Departamento departamento = repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Departamento", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Departamento", id));
         return mapper.toDepartamentoResponse(departamento);
     }
 
@@ -41,12 +45,12 @@ public class DepartamentoService {
 
     private void verificaSeExiste(Long id) {
         repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Departamento", id));
+            .orElseThrow(() ->new ResourceNotFoundException("Departamento", id));
     }
 
     public DepartamentoResponse atualizarFuncionario(Long id, DepartamentoRequest departamentoRequest) {
         Departamento departamento = repository.findById(id)
-            .orElseThrow(() -> new com.empresa.rh.exception.ResourceNotFoundException("Departamento", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Departamento", id));
         departamento.setNome(departamentoRequest.nome());
         departamento.setDescricao(departamentoRequest.descricao());
         repository.save(departamento);
@@ -66,10 +70,10 @@ public class DepartamentoService {
         return departamentos.map(mapper::toDepartamentoResponse);
     }
 
-    public java.util.List<DepartamentoResponse> listarTodosDepartamentos() {
+    public List<DepartamentoResponse> listarTodosDepartamentos() {
         return repository.findAll().stream()
             .map(mapper::toDepartamentoResponse)
-            .collect(java.util.stream.Collectors.toList());
+            .collect(Collectors.toList());
     }
 
 }
