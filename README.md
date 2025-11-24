@@ -470,6 +470,23 @@ O projeto segue o padrão **MVC (Model-View-Controller)** com separação em cam
 - Validação de tipos e formatos
 
 ## 📊 Banco de Dados
+Como rodar o projeto usando MySQL via XAMPP:
+
+Para usar o MySQL do XAMPP no projeto, siga os passos abaixo:
+
+1. Ative o MySQL no **XAMPP**
+
+Abra o XAMPP Control Panel e clique em Start no módulo MySQL.
+A porta padrão é 3306.
+
+2. Crie o banco de dados
+
+Acesse o phpMyAdmin:
+
+http://localhost/phpmyadmin
+
+Crie o banco:
+### **CREATE DATABASE rhdb;**
 
 O sistema utiliza **H2 Database** em memória, o que significa:
 - ✅ Não requer instalação de banco de dados
@@ -509,9 +526,9 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 ## 👨‍💻 Autor
 
-Desenvolvido como projeto acadêmico para disciplina de Java OOP2.
+Desenvolvido como projeto acadêmico para disciplina de Java.
 
 ---
 
-**Desenvolvido com ❤️ usando Spring Boot e Bootstrap**
+
 
