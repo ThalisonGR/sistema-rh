@@ -5,6 +5,7 @@ import com.empresa.rh.controller.dtos.response.FuncionarioResponse;
 import com.empresa.rh.controller.mapper.FuncionarioMapper;
 import com.empresa.rh.controller.swagger.FuncionarioControllerDocs;
 import com.empresa.rh.service.FuncionarioService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class FuncionarioController implements FuncionarioControllerDocs {
     }
 
     @PostMapping
-    public ResponseEntity<FuncionarioResponse> criarFuncionario(@RequestBody FuncionarioRequest funcionarioRequest) {
+    public ResponseEntity<FuncionarioResponse> criarFuncionario(@RequestBody @Valid FuncionarioRequest funcionarioRequest) {
 
         FuncionarioResponse funcionarioSaved = funcionarioService.criar(funcionarioRequest);
 
@@ -43,7 +44,7 @@ public class FuncionarioController implements FuncionarioControllerDocs {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioResponse> atualizar(@PathVariable Long id, @RequestBody FuncionarioRequest funcionarioRequest) {
+    public ResponseEntity<FuncionarioResponse> atualizar(@PathVariable Long id, @RequestBody  FuncionarioRequest funcionarioRequest) {
         FuncionarioResponse funcionarioSaved = funcionarioService.atualizarFuncionario(id, funcionarioRequest);
 
         URI location = ServletUriComponentsBuilder

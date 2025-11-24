@@ -1,11 +1,12 @@
 package com.empresa.rh.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @ToString
 @Entity
@@ -19,8 +20,7 @@ public class Funcionario {
     private String nome;
     private String email;
     
-    @Temporal(TemporalType.DATE)
-    private Date dataContratacao;
+    private LocalDate dataContratacao;
     private Double salario;
 
     @ManyToOne(fetch = FetchType.EAGER)

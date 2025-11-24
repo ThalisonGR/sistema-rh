@@ -11,8 +11,8 @@ public interface FuncionarioMapper {
 
     Funcionario toFuncionario(FuncionarioRequest funcionarioRequest);
 
-    @Mapping(target = "departamentoId", expression = "java(funcionario.getDepartamento() != null ? funcionario.getDepartamento().getId() : null)")
-    @Mapping(target = "cargoId", expression = "java(funcionario.getCargo() != null ? funcionario.getCargo().getId() : null)")
-    @Mapping(target = "chefeId", expression = "java(funcionario.getChefe() != null ? funcionario.getChefe().getId() : null)")
+    @Mapping(source = "departamento.nome", target = "departamento")
+    @Mapping(source = "cargo.nome", target = "cargo")
+    @Mapping(source = "chefe.nome", target = "chefe")
     FuncionarioResponse toFuncionarioResponse(Funcionario funcionario);
 }

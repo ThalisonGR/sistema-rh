@@ -77,6 +77,11 @@
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Salário</th>
+                                <th>Data de Contratação</th>
+                                <th>Departamento</th>
+                                <th>Cargo</th>
+                                <th>Chefe</th>
+                                <th>Salário</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -166,7 +171,7 @@
             carregarFuncionarios(0);
         }
 
-        function exibirFuncionarios(funcionarios) {
+        function exibirFuncionarios(funcionarios ) {
             const tbody = document.getElementById('tbodyFuncionarios');
             
             if (!funcionarios || funcionarios.length === 0) {
@@ -179,6 +184,11 @@
                     <td>${funcionario.id}</td>
                     <td>${funcionario.nome}</td>
                     <td>${funcionario.email}</td>
+                    <td>${funcionario.salario}</td>
+                    <td>${funcionario.dataContratacao}</td>
+                    <td>${funcionario.departamento}</td>
+                    <td>${funcionario.cargo}</td>
+                    <td>${funcionario.chefe}</td>
                     <td>R$ ${parseFloat(funcionario.salario).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
                     <td>
                         <a href="editar.html?id=${funcionario.id}" class="btn btn-sm btn-warning btn-action" title="Editar">

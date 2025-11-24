@@ -17,31 +17,42 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
         
         if (!response.ok) {
-            // Lê o texto da resposta uma única vez
             const errorText = await response.text();
             let errorMessage = '';
-            
+        
             if (errorText) {
                 try {
-                    // Tenta fazer parse do JSON
                     const errorData = JSON.parse(errorText);
-                    // Extrai a mensagem do objeto de erro
-                    if (errorData.message) {
+        
+                    // prioridade: erro de validação
+                    if (errorData.errors) {
+                        const firstError = Object.values(errorData.errors)[0];
+                        if (firstError) {
+                            errorMessage = firstError;
+                        }
+                    }
+        
+                    // mensagem padrão
+                    if (!errorMessage && errorData.message) {
                         errorMessage = errorData.message;
-                    } else if (errorData.error) {
+                    }
+        
+                    if (!errorMessage && errorData.error) {
                         errorMessage = errorData.error;
-                    } else {
+                    }
+        
+                    if (!errorMessage) {
                         errorMessage = errorText;
                     }
+        
                 } catch (e) {
-                    // Se não for JSON, usa o texto diretamente
                     errorMessage = errorText;
                 }
             } else {
                 errorMessage = `Erro ${response.status}: ${response.statusText}`;
             }
-            
-            throw new Error(errorMessage || `Erro ${response.status}: ${response.statusText}`);
+        
+            throw new Error(errorMessage);
         }
 
         // Se a resposta for 204 No Content, retorna null imediatamente

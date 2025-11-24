@@ -1,160 +1,165 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Funcionário - Sistema de RH</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="../index.html">
-                <i class="bi bi-people-fill"></i> Sistema de RH
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html">Início</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="listar.html">Funcionários</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../cargos/listar.html">Cargos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../departamentos/listar.html">Departamentos</a>
-                    </li>
-                </ul>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadastrar Funcionário - Sistema de RH</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../index.html">
+                    <i class="bi bi-people-fill"></i> Sistema de RH
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">Início</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="listar.html">Funcionários</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../cargos/listar.html">Cargos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../departamentos/listar.html">Departamentos</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0"><i class="bi bi-person-plus"></i> Cadastrar Funcionário</h4>
-                    </div>
-                    <div class="card-body">
-                        <form id="formFuncionario">
-                            <div class="mb-3">
-                                <label for="nome" class="form-label">Nome *</label>
-                                <input type="text" class="form-control" id="nome" name="nome" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="salario" class="form-label">Salário *</label>
-                                <input type="number" class="form-control" id="salario" name="salario" step="0.01" min="0" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="departamento" class="form-label">Departamento</label>
-                                <select class="form-select" id="departamento" name="departamento">
-                                    <option value="">Selecione um departamento</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="cargo" class="form-label">Cargo</label>
-                                <select class="form-select" id="cargo" name="cargo">
-                                    <option value="">Selecione um cargo</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="chefe" class="form-label">Chefe</label>
-                                <select class="form-select" id="chefe" name="chefe">
-                                    <option value="">Nenhum (sem chefe)</option>
-                                </select>
-                            </div>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a href="listar.html" class="btn btn-secondary">Cancelar</a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check-circle"></i> Salvar
-                                </button>
-                            </div>
-                        </form>
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0"><i class="bi bi-person-plus"></i> Cadastrar Funcionário</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="formFuncionario">
+                                <div class="mb-3">
+                                    <label for="nome" class="form-label">Nome *</label>
+                                    <input type="text" class="form-control" id="nome" name="nome" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="salario" class="form-label">Salário *</label>
+                                    <input type="number" class="form-control" id="salario" name="salario" step="0.01" min="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dataContratacao" class="form-label">Data Contratação *</label>
+                                    <input type="date" class="form-control" id="dataContratacao" name="dataContratacao" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="departamento" class="form-label">Departamento</label>
+                                    <select class="form-select" id="departamento" name="departamento" required>
+                                        <option value="">Selecione um departamento</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cargo" class="form-label">Cargo</label>
+                                    <select class="form-select" id="cargo" name="cargo" required>
+                                        <option value="">Selecione um cargo</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="chefe" class="form-label">Chefe</label>
+                                    <select class="form-select" id="chefe" name="chefe">
+                                        <option value="">Nenhum (sem chefe)</option>
+                                    </select>
+                                </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="listar.html" class="btn btn-secondary">Cancelar</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-circle"></i> Salvar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/api.js"></script>
-    <script>
-        // Carregar departamentos, cargos e funcionários ao carregar a página
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // Carregar departamentos
-                const departamentos = await DepartamentoAPI.listarTodos();
-                const selectDepartamento = document.getElementById('departamento');
-                departamentos.forEach(dept => {
-                    const option = document.createElement('option');
-                    option.value = dept.id;
-                    option.textContent = dept.nome;
-                    selectDepartamento.appendChild(option);
-                });
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../js/api.js"></script>
+        <script>
+            // Carregar departamentos, cargos e funcionários ao carregar a página
+            document.addEventListener('DOMContentLoaded', async () => {
+                try {
+                    // Carregar departamentos
+                    const departamentos = await DepartamentoAPI.listarTodos();
+                    const selectDepartamento = document.getElementById('departamento');
+                    departamentos.forEach(dept => {
+                        const option = document.createElement('option');
+                        option.value = dept.id;
+                        option.textContent = dept.nome;
+                        selectDepartamento.appendChild(option);
+                    });
 
-                // Carregar cargos
-                const cargos = await CargoAPI.listarTodos();
-                const selectCargo = document.getElementById('cargo');
-                cargos.forEach(cargo => {
-                    const option = document.createElement('option');
-                    option.value = cargo.id;
-                    option.textContent = cargo.nome;
-                    selectCargo.appendChild(option);
-                });
+                    // Carregar cargos
+                    const cargos = await CargoAPI.listarTodos();
+                    const selectCargo = document.getElementById('cargo');
+                    cargos.forEach(cargo => {
+                        const option = document.createElement('option');
+                        option.value = cargo.id;
+                        option.textContent = cargo.nome;
+                        selectCargo.appendChild(option);
+                    });
 
-                // Carregar funcionários para o campo chefe
-                const funcionarios = await FuncionarioAPI.listar(0, 1000, 'id');
-                const selectChefe = document.getElementById('chefe');
-                funcionarios.content.forEach(func => {
-                    const option = document.createElement('option');
-                    option.value = func.id;
-                    option.textContent = func.nome;
-                    selectChefe.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Erro ao carregar dados:', error);
-            }
-        });
+                    // Carregar funcionários para o campo chefe
+                    const funcionarios = await FuncionarioAPI.listar(0, 1000, 'id');
+                    const selectChefe = document.getElementById('chefe');
+                    funcionarios.content.forEach(func => {
+                        const option = document.createElement('option');
+                        option.value = func.id;
+                        option.textContent = func.nome;
+                        selectChefe.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                }
+            });
 
-        document.getElementById('formFuncionario').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const departamentoId = document.getElementById('departamento').value;
-            const cargoId = document.getElementById('cargo').value;
-            const chefeId = document.getElementById('chefe').value;
+            document.getElementById('formFuncionario').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const departamentoId = document.getElementById('departamento').value;
+                const cargoId = document.getElementById('cargo').value;
+                const chefeId = document.getElementById('chefe').value;
 
-            const formData = {
-                nome: document.getElementById('nome').value,
-                email: document.getElementById('email').value,
-                salario: parseFloat(document.getElementById('salario').value),
-                departamentoId: departamentoId ? parseInt(departamentoId) : null,
-                cargoId: cargoId ? parseInt(cargoId) : null,
-                chefeId: chefeId ? parseInt(chefeId) : null
-            };
+                const formData = {
+                    nome: document.getElementById('nome').value,
+                    email: document.getElementById('email').value,
+                    salario: parseFloat(document.getElementById('salario').value),
+                    dataContratacao: document.getElementById('dataContratacao').value, // SIMPLIFICADO
+                    departamentoId: departamentoId ? parseInt(departamentoId) : null,
+                    cargoId: cargoId ? parseInt(cargoId) : null,
+                    chefeId: chefeId ? parseInt(chefeId) : null
+                };
 
-            try {
-                await FuncionarioAPI.criar(formData);
-                showAlert('Funcionário cadastrado com sucesso!', 'success');
-                setTimeout(() => {
-                    window.location.href = 'listar.html';
-                }, 1500);
-            } catch (error) {
-                showAlert('Erro ao cadastrar funcionário: ' + error.message, 'danger');
-            }
-        });
-    </script>
-</body>
-</html>
+                try {
+                    await FuncionarioAPI.criar(formData);
+                    showAlert('Funcionário cadastrado com sucesso!', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'listar.html';
+                    }, 1500);
+                } catch (error) {
+                    showAlert('Erro ao cadastrar funcionário: ' + error.message, 'danger');
+                }
+            });
+        </script>
+    </body>
+    </html>
 
